@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
 	"os"
 
@@ -135,23 +134,11 @@ func sendDiscordWebhook(orig incomingWebhook) {
 
 	req.Header.Add("Content-Type", "application/json")
 
-	reqDump, err := httputil.DumpRequestOut(req, true)
-	if err != nil {
-		fmt.Printf("sendDiscordWebhook DumpRequest failed: %v\n", err)
-	}
-	fmt.Printf("Discord request:\n%s\n", reqDump)
-
 	client := &http.Client{}
-	resp, err := client.Do(req)
+	_, err = client.Do(req)
 	if err != nil {
 		fmt.Printf("sendDiscordWebhook client.Do failed: %v\n", err)
 		return
-	}
-
-	buf = new(bytes.Buffer)
-	buf.ReadFrom(resp.Body)
-	if buf.String() != "ok" {
-		fmt.Printf("sendDiscordWebhook %s response: %s\n", u.String(), buf.String())
 	}
 
 	return
@@ -168,7 +155,6 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("handleWebhook received %d events\n", len(events))
 	for _, event := range events {
-		fmt.Printf("Sending event\n")
 		sendTeamsWebhook(event)
 		sendDiscordWebhook(event)
 	}
