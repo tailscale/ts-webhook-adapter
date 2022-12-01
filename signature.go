@@ -9,6 +9,7 @@ package main
 import (
 	"crypto/hmac"
 	"crypto/sha256"
+	"crypto/subtle"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -63,7 +64,7 @@ func verifyWebhookSignature(req *http.Request, secret string) (events []incoming
 	// Verify that the signatures match.
 	var match bool
 	for _, signature := range signatures[currentVersion] {
-		if signature == want {
+		if subtle.ConstantTimeCompare([]byte(signature), []byte(want)) == 1 {
 			match = true
 			break
 		}
