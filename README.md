@@ -34,3 +34,14 @@ as an environment variable named `DISCORD_WEBHOOK_URL` for this service.
 ![Discord Webhook integration](images/Discord.png)
 
 If no `DISCORD_WEBHOOK_URL` variable has been set, the Discord delivery will be skipped.
+
+## To Run
+Set up [Tailscale Funnel](https://tailscale.com/kb/1223/funnel). Once enabled then do the following to enable the endpoint:
+1. Install [golang](https://go.dev/doc/install)
+2. Clone this repo locally
+3. cd into the cloned repo and run `go get` then `go build` to compile the ts--adapter
+4. Ensure you've set your envioronment variables applicable above then run the newly compiled program: `./ts-webhook-adapter`
+5. `tailscale funnel 8080` You will get a URL such as `https://<yourhostname>.examplemagic-dns.ts.net/`. Take note of this.
+6. Go back to Tailscale Admin console and create a new Webhook Endpoint. Use `https://<yourhostname>.examplemagic-dns.ts.net/webhook` as the endpoint. Take note to add `/webhook` at the end of the URL.
+7. Test the endpoint by click on the three-dots -> Test endpoint
+You should begin receiving alerts now.

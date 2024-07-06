@@ -17,12 +17,12 @@ import (
 )
 
 type incomingWebhook struct {
-	Timestamp string            `json:"timestamp"`
-	Version   int               `json:"version"`
-	Type      string            `json:"type"`
-	Tailnet   string            `json:"tailnet"`
-	Message   string            `json:"message"`
-	Data      map[string]string `json:"data"`
+	Timestamp string         `json:"timestamp"`
+	Version   int            `json:"version"`
+	Type      string         `json:"type"`
+	Tailnet   string         `json:"tailnet"`
+	Message   string         `json:"message"`
+	Data      map[string]any `json:"data"` //TODO: Verify if this is the right way to do this.
 }
 
 // https://learn.microsoft.com/en-us/outlook/actionable-messages/message-card-reference
